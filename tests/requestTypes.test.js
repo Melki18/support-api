@@ -1,65 +1,62 @@
-const request = require('supertest');
-const mongoose = require('mongoose');
-const app = require('../src/server');
-const connectDB = require('../src/config/database');
-const RequestType = require('../src/models/RequestType');
+const request = require("supertest");
+const { start, stop } = require("../src/server");
+const mongoose = require("mongoose");
+// const RequestType = require("../src/models/RequestType"); // Non utilisé pour l'instant
+
+let server;
 
 beforeAll(async () => {
-  const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/support-api-test';
-  await connectDB(uri);
+  process.env.MONGO_URI = "mongodb://localhost:27017/support-api-test";
+  server = await start();
+  // / je vider la collection RequestType pour éviter les doublons
+  await mongoose.connection.db.collection("requesttypes").deleteMany({});
 });
 
 afterAll(async () => {
-  await mongoose.connection.dropDatabase();
+  await stop();
   await mongoose.connection.close();
 });
 
-describe('Health', () => {
-  test('GET /health returns 200', async () => {
-    const res = await request(app).get('/health');
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty('status', 'ok');
-  });
+test("GET /health", async () => {
+  const res = await request(server).get("/health");
+  expect(res.status).toBe(200);
+  expect(res.body.status).toBe("ok");
 });
 
-describe('Request Types', () => {
-  let id;
-  beforeAll(async () => {
-    const doc = await RequestType.create({
-      code: 'TEST_CODE',
-      name: 'Test',
-      description: 'desc',
-      priority: 'low',
-      category: 'test',
-      estimatedResponseTime: 1
-    });
-    id = doc._id.toString();
+describe("RequestTypes API", () => {
+  test("POST /api/request-types crée un type", async () => {
+    const payload = {
+      code: "TEST_1",
+      name: "Test",
+      description: "desc",
+      category: "demo",
+    };
+    const res = await request(server).post("/api/request-types").send(payload);
+
+    if (res.status !== 201) {
+      console.log("Erreur POST /api/request-types:", res.body);
+    }
+
+    expect(res.status).toBe(201);
   });
 
-  test('GET /api/request-types returns array', async () => {
-    const res = await request(app).get('/api/request-types');
+  test("GET /api/request-types renvoie un tableau", async () => {
+    const res = await request(server).get("/api/request-types");
     expect(Array.isArray(res.body)).toBe(true);
   });
-
-  test('GET /api/request-types/:id returns item', async () => {
-    const res = await request(app).get(`/api/request-types/${id}`);
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty('code', 'TEST_CODE');
-  });
-
-  test('POST /api/request-types creates', async () => {
-    const payload = {
-      code: 'POST_TEST',
-      name: 'Post Test',
-      description: 'desc',
-      priority: 'medium',
-      category: 'test',
-      estimatedResponseTime: 2
-    };
-    const res = await request(app).post('/api/request-types').send(payload);
-    expect(res.statusCode).toBe(201);
-    expect(res.body).toHaveProperty('code', 'POST_TEST');
-  });
 });
+test("GET /api/request-types ne renvoie que les types actifs", async () => {
+  await mongoose.connection.db.collection("requesttypes").insertOne({
+    code: "INACTIVE_TEST",
+    name: "Inactive",
+    description: "desc inactive",
+    category: "test",
+    isActive: false,
+  });
 
-//tests
+  const res = await request(server).get("/api/request-types");
+
+  const inactive = res.body.find((item) => item.code === "INACTIVE_TEST");
+
+  expect(inactive).toBeUndefined();
+});

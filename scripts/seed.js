@@ -1,61 +1,82 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
-const RequestType = require('../src/models/RequestType');
+require("dotenv").config();
+const mongoose = require("mongoose");
 
-const data = [
+// ✅ Chemin correct vers ton modèle
+const RequestType = require("../src/models/RequestType");
+
+const MONGO_URI =
+  process.env.MONGO_URI || "mongodb://127.0.0.1:27017/support-api";
+
+const seeds = [
   {
-    code: 'TECH_ISSUE',
-    name: 'Problème technique',
-    description: 'Problème technique signalé par un utilisateur',
-    priority: 'high',
-    category: 'technical',
-    estimatedResponseTime: 4
+    code: "TECH_ISSUE",
+    name: "Problème technique",
+    description: "Bug technique",
+    category: "tech",
+    priority: "high",
   },
   {
-    code: 'BILLING_QUESTION',
-    name: 'Question de facturation',
-    description: 'Question relative à la facturation',
-    priority: 'medium',
-    category: 'billing',
-    estimatedResponseTime: 24
+    code: "BILLING_Q",
+    name: "Question facturation",
+    description: "Facture",
+    category: "billing",
   },
   {
-    code: 'ACCOUNT_CHANGE',
-    name: 'Demande de modification de compte',
-    description: "Modification d'information du compte utilisateur",
-    priority: 'low',
-    category: 'account',
-    estimatedResponseTime: 48
+    code: "ACCOUNT_CHANGE",
+    name: "Modification compte",
+    description: "Demande utilisateur",
+    category: "user",
   },
   {
-    code: 'FEATURE_REQUEST',
-    name: 'Demande de fonctionnalité',
-    description: 'Proposition ou demande de nouvelle fonctionnalité',
-    priority: 'medium',
-    category: 'product',
-    estimatedResponseTime: 168
+    code: "FEATURE_REQ",
+    name: "Demande fonctionnalité",
+    description: "Nouvelle idée",
+    category: "product",
   },
   {
-    code: 'COMPLAINT',
-    name: 'Réclamation',
-    description: 'Client mécontent',
-    priority: 'critical',
-    category: 'support',
-    estimatedResponseTime: 2
-  }
+    code: "COMPLAINT",
+    name: "Réclamation",
+    description: "Plainte",
+    category: "support",
+    priority: "critical",
+  },
 ];
 
-const run = async () => {
-  const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/support-api';
-  await mongoose.connect(mongoUri);
-  await RequestType.deleteMany({});
-  await RequestType.insertMany(data);
-  console.log('Seed complete');
-  process.exit(0);
-};
+async function run() {
+  try {
+    console.log("Connexion à MongoDB sur :", MONGO_URI);
+    await mongoose.connect(MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("Connecté à MongoDB !");
 
-run().catch((err) => {
-  // eslint-disable-next-line no-console
-  console.error(err);
-  process.exit(1);
-});
+    // Vérification que le modèle est bien chargé
+    if (!RequestType || !RequestType.countDocuments) {
+      throw new Error(
+        "Le modèle RequestType n’a pas été chargé correctement !",
+      );
+    }
+
+    const countBefore = await RequestType.countDocuments();
+    console.log("Documents avant insertion :", countBefore);
+
+    // On vide la collection
+    await RequestType.deleteMany({});
+    console.log("Collection vidée");
+
+    // Insertion des seeds
+    const result = await RequestType.insertMany(seeds);
+    console.log("Données insérées :", result.length);
+
+    const countAfter = await RequestType.countDocuments();
+    console.log("Documents après insertion :", countAfter);
+
+    await mongoose.disconnect();
+    console.log("Déconnecté de MongoDB");
+  } catch (err) {
+    console.error("Erreur lors du seed :", err);
+  }
+}
+
+run();
