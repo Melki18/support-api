@@ -1,15 +1,26 @@
 const request = require("supertest");
 const { start, stop } = require("../src/server");
 const mongoose = require("mongoose");
-// const RequestType = require("../src/models/RequestType"); // Non utilisé pour l'instant
+const RequestType = require("../src/models/RequestType"); // utilisé pour le seed
 
 let server;
 
 beforeAll(async () => {
+  jest.setTimeout(20000); // Timeout augmenté à 20s
   process.env.MONGO_URI = "mongodb://localhost:27017/support-api-test";
   server = await start();
-  // / je vider la collection RequestType pour éviter les doublons
-  await mongoose.connection.db.collection("requesttypes").deleteMany({});
+
+  // Vider la collection avant les tests
+  await RequestType.deleteMany({});
+
+  // Seed initial avec un type actif
+  await RequestType.create({
+    code: "ACTIVE_TEST",
+    name: "Active Test",
+    description: "Description active",
+    category: "test",
+    isActive: true,
+  });
 });
 
 afterAll(async () => {
@@ -38,25 +49,29 @@ describe("RequestTypes API", () => {
     }
 
     expect(res.status).toBe(201);
+    expect(res.body.code).toBe(payload.code);
   });
 
   test("GET /api/request-types renvoie un tableau", async () => {
     const res = await request(server).get("/api/request-types");
     expect(Array.isArray(res.body)).toBe(true);
-  });
-});
-test("GET /api/request-types ne renvoie que les types actifs", async () => {
-  await mongoose.connection.db.collection("requesttypes").insertOne({
-    code: "INACTIVE_TEST",
-    name: "Inactive",
-    description: "desc inactive",
-    category: "test",
-    isActive: false,
+    expect(res.body.length).toBeGreaterThan(0);
   });
 
-  const res = await request(server).get("/api/request-types");
+  test("GET /api/request-types ne renvoie que les types actifs", async () => {
+    // Ajouter un type inactif
+    await RequestType.create({
+      code: "INACTIVE_TEST",
+      name: "Inactive",
+      description: "desc inactive",
+      category: "test",
+      isActive: false,
+    });
 
-  const inactive = res.body.find((item) => item.code === "INACTIVE_TEST");
+    const res = await request(server).get("/api/request-types");
 
-  expect(inactive).toBeUndefined();
+    const inactive = res.body.find((item) => item.code === "INACTIVE_TEST");
+
+    expect(inactive).toBeUndefined();
+  });
 });
