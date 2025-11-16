@@ -10,18 +10,73 @@ Le projet utilise un workflow basé sur **Git Feature Branches** :
 * **feature/...** : une branche par fonctionnalité ou tâche.
 * **test**, **fix/...**, **refactor/...** (si besoin) : branches additionnelles selon le besoin.
 
+
+## Structure du projet
+
+### 🔹 Arborescence
+
+```
+support-api/
+├── src/
+│   ├── models/
+│   │   └── RequestType.js
+│   ├── routes/
+│   │   └── requestTypes.js
+│   ├── config/
+│   │   └── database.js
+│   └── server.js
+├── tests/
+│   └── requestTypes.test.js
+├── .eslintrc.json
+├── package.json
+└── README.md
+
+
+<img width="220" height="538" alt="Capture d&#39;écran 2025-11-15 125908" src="https://github.com/user-attachments/assets/49938b2c-1437-473b-9aa5-a864585b4e85" />
+
+
+### 🔹 Rôle de chaque dossier
+
+* **src/models** : Modèles Mongoose
+* **src/routes** : Routes Express
+* **src/config** : Connexion base de données
+* **src/server.js** : Point d'entrée serveur Express
+* **tests/** : Tests unitaires / API
+* **package.json** : Dépendances + scripts
+
 ### 🔹 Règles de protection de la branche `main`
 
-* ❌ **Push direct interdit**
-* 🔀 **Pull Request obligatoire avant merge**
-* ✔️ **Status checks obligatoires (CI/CD)**
-* ✔️ **Branches à jour avant merge**
-* ✔️ **Dismiss stale approvals**
-* ✔️ **Force push désactivé**
+❌ Bloquer les pushs directs sur main
+✅ Require pull request before merging
+✅ Require approvals : 0 (pour l'évaluation en solo)
+✅ Dismiss stale pull request approvals when new commits are pushed
+✅ Require status checks to pass before merging
+✅ Require branches to be up to date before merging
 
 
 
 <img width="1344" height="629" alt="Capture d&#39;écran 2025-11-14 091900" src="https://github.com/user-attachments/assets/0da9b6fc-42c1-4085-a79c-7216b0e8f3c6" />
+
+
+### Base de données
+
+L’API utilise MongoDB.
+La configuration est gérée dans src/config/database.js.
+
+| Méthode | Route                | Description                 |
+| ------- | -------------------- | --------------------------- |
+| GET     | `/request-types`     | Récupère tous les types     |
+| POST    | `/request-types`     | Crée un nouveau type        |
+| GET     | `/request-types/:id` | Récupère un type spécifique |
+| PUT     | `/request-types/:id` | Met à jour un type          |
+| DELETE  | `/request-types/:id` | Supprime un type            |
+
+
+<img width="1360" height="723" alt="image" src="https://github.com/user-attachments/assets/19866de9-bfb5-44a9-a8dc-503910e103e0" />
+
+
+
+<img width="967" height="343" alt="image" src="https://github.com/user-attachments/assets/d38ed1fe-b60d-449e-893a-4f273369aef0" />
 
 
 
@@ -48,7 +103,7 @@ git push -u origin feature/ma-feature
 
 ---
 
-## Section 2 : CI/CD
+## Section : CI/CD
 
 ### 🔹 Badge CI/CD
 
@@ -132,37 +187,10 @@ Retourne uniquement les types **actifs**.
 
 ---
 
-## Section 4 : Structure du projet
 
-### 🔹 Arborescence
-
-```
-support-api/
-├── src/
-│   ├── models/
-│   │   └── RequestType.js
-│   ├── routes/
-│   │   └── requestTypes.js
-│   ├── config/
-│   │   └── database.js
-│   └── server.js
-├── tests/
-│   └── requestTypes.test.js
-├── .eslintrc.json
-├── package.json
-└── README.md
-```
-
-### 🔹 Rôle de chaque dossier
-
-* **src/models** : Modèles Mongoose
-* **src/routes** : Routes Express
-* **src/config** : Connexion base de données
-* **src/server.js** : Point d'entrée serveur Express
-* **tests/** : Tests unitaires / API
-* **package.json** : Dépendances + scripts
 
 ---
 
 Si tu veux, je peux maintenant ajouter tes captures, ton badge CI/CD ou adapter le README au format que ton prof veut.
+
 
