@@ -1,0 +1,161 @@
+# Support API – Documentation
+
+## Section 1 : Workflow Git
+
+### 🔹 Workflow utilisé
+
+Le projet utilise un workflow basé sur **Git Feature Branches** :
+
+* **main** : branche stable, protégée.
+* **feature/...** : une branche par fonctionnalité ou tâche.
+* **test**, **fix/...**, **refactor/...** (si besoin) : branches additionnelles selon le besoin.
+
+### 🔹 Règles de protection de la branche `main`
+
+* ❌ **Push direct interdit**
+* 🔀 **Pull Request obligatoire avant merge**
+* ✔️ **Status checks obligatoires (CI/CD)**
+* ✔️ **Branches à jour avant merge**
+* ✔️ **Dismiss stale approvals**
+* ✔️ **Force push désactivé**
+
+### 🔹 Création d’une Pull Request
+
+1. Pousser ta branche :
+
+```bash
+git push -u origin feature/ma-feature
+```
+
+2. Aller sur GitHub → onglet **Pull Requests**
+3. Cliquer **New Pull Request**
+4. Choisir :
+
+   * Base : `main`
+   * Compare : `feature/...`
+5. Vérifier le diff
+6. Créer la PR et demander une revue
+
+### 🔹 Captures d'écran GitHub
+
+*(À insérer plus tard par l’utilisateur)*
+
+---
+
+## Section 2 : CI/CD
+
+### 🔹 Badge CI/CD
+
+*(Badge à ajouter après configuration GitHub Actions)*
+
+### 🔹 Jobs configurés
+
+* **Install dependencies** (npm install)
+* **Run tests** (Jest)
+* **Linting** (ESLint)
+* **Build check** (optionnel)
+
+### 🔹 Required checks
+
+* Les tests doivent passer avant le merge
+* Le lint doit être propre
+* La branche doit être à jour avec `main`
+
+---
+
+## Section 3 : Installation & Utilisation
+
+### 🔹 Prérequis
+
+* Node.js ≥ 18
+* npm ≥ 9
+* Docker (si utilisation de MongoDB en container)
+* MongoDB ≥ 7 (local ou container)
+
+### 🔹 Installation
+
+```bash
+git clone https://github.com/Melki18/support-api.git
+cd support-api
+npm install
+```
+
+### 🔹 Variables d’environnement
+
+Créer un fichier **.env** :
+
+```env
+PORT=3000
+MONGO_URI=mongodb://localhost:27017/support-api
+```
+
+### 🔹 Commandes disponibles
+
+| Commande               | Description                           |
+| ---------------------- | ------------------------------------- |
+| `npm start`            | Lance le serveur                      |
+| `npm run dev`          | Lance en mode développement (nodemon) |
+| `npm run lint`         | Analyse ESLint                        |
+| `npm test`             | Lance les tests Jest                  |
+| `docker-compose up -d` | Démarre MongoDB en container          |
+
+### 🔹 Exemples d’appels API
+
+#### ✔️ GET `/health`
+
+Retourne :
+
+```json
+{ "status": "ok" }
+```
+
+#### ✔️ POST `/api/request-types`
+
+```json
+{
+  "code": "REQ001",
+  "name": "Support général",
+  "description": "Demande standard",
+  "category": "support"
+}
+```
+
+#### ✔️ GET `/api/request-types`
+
+Retourne uniquement les types **actifs**.
+
+---
+
+## Section 4 : Structure du projet
+
+### 🔹 Arborescence
+
+```
+support-api/
+├── src/
+│   ├── models/
+│   │   └── RequestType.js
+│   ├── routes/
+│   │   └── requestTypes.js
+│   ├── config/
+│   │   └── database.js
+│   └── server.js
+├── tests/
+│   └── requestTypes.test.js
+├── .eslintrc.json
+├── package.json
+└── README.md
+```
+
+### 🔹 Rôle de chaque dossier
+
+* **src/models** : Modèles Mongoose
+* **src/routes** : Routes Express
+* **src/config** : Connexion base de données
+* **src/server.js** : Point d'entrée serveur Express
+* **tests/** : Tests unitaires / API
+* **package.json** : Dépendances + scripts
+
+---
+
+Si tu veux, je peux maintenant ajouter tes captures, ton badge CI/CD ou adapter le README au format que ton prof veut.
