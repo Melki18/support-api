@@ -19,6 +19,12 @@ Le projet utilise un workflow basé sur **Git Feature Branches** :
 * ✔️ **Dismiss stale approvals**
 * ✔️ **Force push désactivé**
 
+
+
+<img width="1344" height="629" alt="Capture d&#39;écran 2025-11-14 091900" src="https://github.com/user-attachments/assets/0da9b6fc-42c1-4085-a79c-7216b0e8f3c6" />
+
+
+
 ### 🔹 Création d’une Pull Request
 
 1. Pousser ta branche :
@@ -159,3 +165,4 @@ support-api/
 ---
 
 Si tu veux, je peux maintenant ajouter tes captures, ton badge CI/CD ou adapter le README au format que ton prof veut.
+
