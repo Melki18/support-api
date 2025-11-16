@@ -32,8 +32,9 @@ support-api/
 └── README.md
 
 
-<img width="220" height="538" alt="Capture d&#39;écran 2025-11-15 125908" src="https://github.com/user-attachments/assets/49938b2c-1437-473b-9aa5-a864585b4e85" />
 
+
+<img width="220" height="538" alt="Capture d&#39;écran 2025-11-15 125908" src="https://github.com/user-attachments/assets/a1d199fe-a37e-4830-aa84-021c879f3190" />
 
 ### 🔹 Rôle de chaque dossier
 
@@ -55,7 +56,8 @@ support-api/
 
 
 
-<img width="1344" height="629" alt="Capture d&#39;écran 2025-11-14 091900" src="https://github.com/user-attachments/assets/0da9b6fc-42c1-4085-a79c-7216b0e8f3c6" />
+<img width="1344" height="629" alt="Capture d&#39;écran 2025-11-14 091900" src="https://github.com/user-attachments/assets/49b9bce7-fa7b-4199-b10b-46e7a835f008" />
+
 
 
 ### Base de données
@@ -72,11 +74,12 @@ La configuration est gérée dans src/config/database.js.
 | DELETE  | `/request-types/:id` | Supprime un type            |
 
 
-<img width="1360" height="723" alt="image" src="https://github.com/user-attachments/assets/19866de9-bfb5-44a9-a8dc-503910e103e0" />
+
+<img width="1360" height="723" alt="Capture d&#39;écran 2025-11-16 124436" src="https://github.com/user-attachments/assets/fc27e077-545e-49f6-9fc7-4fad9f13aad3" />
 
 
 
-<img width="967" height="343" alt="image" src="https://github.com/user-attachments/assets/d38ed1fe-b60d-449e-893a-4f273369aef0" />
+<img width="967" height="343" alt="Capture d&#39;écran 2025-11-16 124541" src="https://github.com/user-attachments/assets/8df85c3a-518a-4bec-86d5-fd17ee36b0a5" />
 
 
 
@@ -192,5 +195,6 @@ Retourne uniquement les types **actifs**.
 ---
 
 Si tu veux, je peux maintenant ajouter tes captures, ton badge CI/CD ou adapter le README au format que ton prof veut.
+
 
 
