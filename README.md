@@ -15,7 +15,7 @@ Le projet utilise un workflow basé sur **Git Feature Branches** :
 
 ### 🔹 Arborescence
 
-```
+
 support-api/
 ├── src/
 │   ├── models/
@@ -87,9 +87,9 @@ La configuration est gérée dans src/config/database.js.
 
 1. Pousser ta branche :
 
-```bash
+bash
 git push -u origin feature/ma-feature
-```
+
 
 2. Aller sur GitHub → onglet **Pull Requests**
 3. Cliquer **New Pull Request**
@@ -125,7 +125,7 @@ git push -u origin feature/ma-feature
 * Le lint doit être propre
 * La branche doit être à jour avec `main`
 
----
+--
 
 ## Section 3 : Installation & Utilisation
 
@@ -138,20 +138,20 @@ git push -u origin feature/ma-feature
 
 ### 🔹 Installation
 
-```bash
+bash
 git clone https://github.com/Melki18/support-api.git
 cd support-api
 npm install
-```
+
 
 ### 🔹 Variables d’environnement
 
 Créer un fichier **.env** :
 
-```env
+env
 PORT=3000
 MONGO_URI=mongodb://localhost:27017/support-api
-```
+
 
 ### 🔹 Commandes disponibles
 
@@ -169,32 +169,20 @@ MONGO_URI=mongodb://localhost:27017/support-api
 
 Retourne :
 
-```json
+json
 { "status": "ok" }
-```
+
 
 #### ✔️ POST `/api/request-types`
 
-```json
+json
 {
   "code": "REQ001",
   "name": "Support général",
   "description": "Demande standard",
   "category": "support"
 }
-```
 
-#### ✔️ GET `/api/request-types`
-
-Retourne uniquement les types **actifs**.
-
----
-
-
-
----
-
-Si tu veux, je peux maintenant ajouter tes captures, ton badge CI/CD ou adapter le README au format que ton prof veut.
 
 
 
