@@ -100,17 +100,6 @@ git push -u origin feature/ma-feature
 5. Vérifier le diff
 6. Créer la PR et demander une revue
 
-### 🔹 Captures d'écran GitHub
-
-*(À insérer plus tard par l’utilisateur)*
-
----
-
-## Section : CI/CD
-
-### 🔹 Badge CI/CD
-
-*(Badge à ajouter après configuration GitHub Actions)*
 
 ### 🔹 Jobs configurés
 
@@ -182,6 +171,7 @@ json
   "description": "Demande standard",
   "category": "support"
 }
+
 
 
 
